@@ -1,0 +1,139 @@
+// ╔═══════════════════════════════════════╗
+// ║  @Ultr                                ║
+// ║  Multi Moving Averages & CrossOver    ║
+// ╚═══════════════════════════════════════╝
+
+//@version=5
+indicator("Multi Moving Average & CrossOver (@Ultr)", shorttitle = "MAs CrossOver(@Ultr.)", overlay = true)
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Colors  ═══ 
+
+length = (10)
+transpar = (100)
+
+// Standard Colors
+//  colorAqua    = color.aqua      // #00BCD4  Aqua
+//  colorBlue    = color.blue      // #2196F3  Blue
+//  colorTeal    = color.teal      // #00897B  Teal
+//  colorGreen   = color.green     // #4CAF50  Green
+//  colorOlive   = color.olive     // #808000  Olive
+//  colorLime    = color.lime      // #00E676  Lime
+//  colorYellow  = color.yellow    // #FFEB3B  Yellow
+//  colorOrange  = color.orange    // #FF9800  Orange
+//  colorMaroon  = color.maroon    // #880E4F  Maroon
+//  colorRed     = color.red       // #FF5252  Red
+//  colorFuchsia = color.fuchsia   // #E040FB  Fuchsia
+//  colorPurple  = color.purple    // #9C27B0  Purple
+//  colorNavy    = color.navy      // #311B92  Navy
+//  colorBlack   = color.black     // #363A45  Black
+//  colorGray    = color.gray      // #787B86  Gray
+//  colorSilver  = color.silver    // #B2B5BE  Silver
+//  colorWhite   = color.white     // #FFFFFF  White
+
+var grpColor = " ═══ Colores ═══ "
+color colorZero = color.new(#e91e63, na)  // color Fucxia
+color colorFirs = color.new(#33ffac, na)  // color Verde
+color colorSeco = color.new(#eedd45, na)  // color Amariñllo
+color colorThir = color.new(#e65100, na)  // color Naranja
+color colorFour = color.new(#00ffd5, na)  // color Menta
+color colorFift = color.new(#12cef8, na)  // color Celeste
+color colorSixt = color.new(#0034c5, na)  // color Azul
+
+color colorLong  = color.new(#33ffac, na)
+color colorShort = color.new(#e91e63, na)
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Inputs  ═══
+
+var grpLong  = " ═══ EMAS ═══ "
+eMa8    = input.bool(defval = true, title = "", group = grpLong, inline = 'ema8')
+eMa20   = input.bool(defval = true, title = "", group = grpLong, inline = 'ema20')
+eMa55   = input.bool(defval = true, title = "", group = grpLong, inline = 'ema55')
+eMa200  = input.bool(defval = true, title = "", group = grpLong, inline = 'ema200')
+
+leng8    = input(8,    title = "Extensión",  group = grpLong, inline = 'ema8')
+leng20   = input(20,   title = "Extensión",  group = grpLong, inline = 'ema20')
+leng55   = input(55,   title = "Extensión",  group = grpLong, inline = 'ema55')
+leng200  = input(200,  title = "Extensión",  group = grpLong, inline = 'ema200')
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Options  ═══
+
+string optionMa	= input.string("SMA", "Tipo de MM", options = ["EMA", "SMA", "RMA", "WMA", "VWMA"])
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Functions  ═══
+
+ma(source, length, type) =>
+    type == "SMA" ? ta.sma(source, length) :    // Media Movil Simple
+     type == "EMA" ? ta.ema(source, length) :   // Media Movil Exponencial
+     type == "RMA" ? ta.rma(source, length) :   // Media Movil
+     type == "WMA" ? ta.wma(source, length) :   // Media Movil Ponderada
+     type == "VWMA" ? ta.vwma(source, length) : // Media Movil Ponderada por volumen
+     na
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Instances  ═══
+
+ma8   = ma(close, leng8,  optionMa)
+ma20  = ma(close, leng20,  optionMa)
+ma55  = ma(close, leng55,   optionMa)
+ma200 = ma(close, leng200,  optionMa)
+
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Display EMAS  ═══
+
+plot(eMa8 ? ma8 : na,     color = colorSeco, title = "2da Ema",  linewidth = 2, editsable = false)
+plot(eMa20 ? ma20 : na,   color = colorThir, title = "3ra Ema",  linewidth = 2, editsable = false)
+plot(eMa55 ? ma55 : na,   color = colorFour, title = "4ta Ema",  linewidth = 2, editsable = false)
+plot(eMa200 ? ma200 : na, color = colorSixt, title = "6ta Ema",  linewidth = 2, editsable = false, style = plot.style_area)
+//  maPlot8  = plot(ma8,  "MA 8",  editable=false, color = na)
+
+
+//  ═════
+//  Cross
+//  CrossOver
+
+// CrossOver shadow
+// 8 MA
+color maCrossOver8 = ma8 > ma13 ? colorBuy : colorSell
+fill(maPlot8, maPlot13, maCrossOver8, "CrossOver 13")
+// 20 MA
+color maCrossOver20 = ma8 > ma20 ? colorBuy : colorSell
+fill(maPlot8, maPlot20, maCrossOver20, "CrossOver 20")
+// 30 MA
+color maCrossOver30 = ma8 > ma30 ? colorBuy : colorSell
+fill(maPlot8, maPlot30, maCrossOver30, "CrossOver 30")
+// 40 MA
+color maCrossOver40 = ma8 > ma40 ? colorBuy : colorSell
+fill(maPlot8, maPlot40, maCrossOver40, "CrossOver 40")
+// 55 MA
+color maCrossOver55 = ma8 > ma55 ? colorBuy : colorSell
+fill(maPlot8, maPlot55, maCrossOver55, "CrossOver 55")
+
+// CrossOver Line
+bool maRising  = ta.rising(ma10, 1)
+color crossMa = maRising ? color.new(colorBuy, transpar-60) : color.new(colorSell, transpar-60)
+plot(ma21, "Operativa", crossMa, 4)
+
+//  Degradado
+
+//  float maHeight = ta.percentrank(ma21, 100)
+//  float transparency = math.min(80, 100 - maHeight)
+
+//  MA degradado
+//  plot(ma, "Degradado", color.new(colorFirs, transparency), 2)
+
+//  Marcas Operativas
+//  buyCond = ta.crossover(ma10, ma21)
+//  sellCond = ta.crossunder(ma10, ma21)
+
+//  plotshape(series = buyCond, title = "Compra", style = shape.triangleup, location = location.belowbar, color = colorBuy, text = "Buy", size = size.tiny)
+//  plotshape(series = sellCond, title = "Venta", style = shape.triangledown, location = location.abovebar, color = colorSell, text = "Sell", size = size.tiny)
