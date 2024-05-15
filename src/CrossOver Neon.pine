@@ -1,10 +1,10 @@
 // ╔═══════════════════════════════════════╗
 // ║  @Ultr                                ║
-// ║  Multi Moving Averages & CrossOver    ║
+// ║  CrossOver Neon                       ║
 // ╚═══════════════════════════════════════╝
 
 //@version=5
-indicator("CrossOver Neon (@Ultr)", shorttitle = "MAs CrossOver(@Ultr.)", overlay = true)
+indicator("CrossOver Neon (@Ultr)", shorttitle = "CrossOver(@Ultr.)", overlay = true)
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -30,13 +30,13 @@ indicator("CrossOver Neon (@Ultr)", shorttitle = "MAs CrossOver(@Ultr.)", overla
 //  colorWhite   = color.white     // #FFFFFF  White
 
 var grpColor = " ═══ Colores ═══ "
-color colorZero = color.new(#e91e63, 20)  // color Fucxia
-color colorFirs = color.new(#33ffac, 20)  // color Verde
-color colorSeco = color.new(#eedd45, 20)  // color Amariñllo
-color colorThir = color.new(#e65100, 70)  // color Naranja
-color colorFour = color.new(#00ffd5, 20)  // color Menta
-color colorFift = color.new(#12cef8, 20)  // color Celeste
-color colorSixt = color.new(#0034c5, 80)  // color Azul
+color colorZero = color.new(#e91e63, na)  // color Fucxia
+color colorFirs = color.new(#33ffac, na)  // color Verde
+color colorSeco = color.new(#eedd45, na)  // color Amariñllo
+color colorThir = color.new(#e65100, na)  // color Naranja
+color colorFour = color.new(#00ffd5, na)  // color Menta
+color colorFift = color.new(#12cef8, na)  // color Celeste
+color colorSixt = color.new(#0034c5, na)  // color Azul
 
 color colorLong  = color.new(#33ffac, na)
 color colorShort = color.new(#e91e63, na)
@@ -56,6 +56,9 @@ length20   = input(20,   title = "Extensión",  group = grpLong, inline = 'ema20
 length55   = input(55,   title = "Extensión",  group = grpLong, inline = 'ema55')
 length200  = input(200,  title = "Extensión",  group = grpLong, inline = 'ema200')
 
+lengthFast = input(8,    title = "Min MA",      group = grpLong)
+lengthSlow = input(20,   title = "Max MA",      group = grpLong)
+
 length          = input(10)
 transparencia   = input(100)
 
@@ -64,6 +67,17 @@ transparencia   = input(100)
 //  ═══  Options  ═══
 
 string optionMa	= input.string("SMA", "Tipo de MM", options = ["EMA", "SMA", "RMA", "WMA", "VWMA"])
+
+//  ══════════════
+//  ═══  Neon  ═══
+//  ═══  Types  ═══
+
+type OHL
+    float O = open
+    float H = high
+    float L = low
+    float C = close
+    float V = volume
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -80,12 +94,13 @@ ma(source, length, type) =>
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Instances  ═══
+ohl = OHL.new()
 
-ma8   = ma(close, length8,    optionMa)
-ma10  = ma(close, length,   optionMa)
-ma20  = ma(close, length20,   optionMa)
-ma55  = ma(close, length55,   optionMa)
-ma200 = ma(close, length200,  optionMa)
+ma8   = ma(ohl.C, length8,    optionMa)
+ma10  = ma(ohl.C, length,     optionMa)
+ma20  = ma(ohl.C, length20,   optionMa)
+ma55  = ma(ohl.C, length55,   optionMa)
+ma200 = ma(ohl.C, length200,  optionMa)
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -94,9 +109,39 @@ ma200 = ma(close, length200,  optionMa)
 float maHeight = ta.percentrank(ma10, 100)
 float transparency = math.min(80, 100 - maHeight)
 
+// Calculando EMAs
+float maFast       = ma(ohl.C, lengthFast, OptionMa)
+float maSlow       = ma(ohl.C, lengthSlow, OptionMa)
+
+bool signal         = emaFast > emaSlow
+color colorCrOver   = signal ? colorLong : colorShort
+
+//  ═══  CrossOver  ═══
+bool crossOver8     = ta.crossover(maFast, maSlow)
+bool crossOver20     = ta.crossover(maFast, maSlow)
+
+bool crossUnder     = ta.crossunder(ma8, ma20)
+
+
+
+bool crossover = ta.crossover(emaFast, emaSlow)
+bool crossunder = ta.crossunder(emaFast, emaSlow)
+
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Display EMAS  ═══
+
+//  ═══  Ma 8  ═══
+plot(eMa8, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
+plot(eMa8, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
+plot(eMa8, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
+plot(eMa8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
+
+//  ═══  Ma 20  ═══
+plot(eMa20, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
+plot(eMa20, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
+plot(eMa20, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
+plot(eMa20, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
 
 plot(eMa8 ? ma8 : na,     color = colorSeco, title = "Ma 8",   linewidth = 2)
 plot(eMa20 ? ma20 : na,   color = colorThir, title = "Ma 20",  linewidth = 2)
