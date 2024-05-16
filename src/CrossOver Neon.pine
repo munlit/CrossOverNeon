@@ -10,25 +10,6 @@ indicator("CrossOver Neon (@Ultr)", shorttitle = "CrossOver(@Ultr.)", overlay = 
 //  ═══  Cross  ═══
 //  ═══  Colors  ═══ 
 
-// Standard Colors
-//  colorAqua    = color.aqua      // #00BCD4  Aqua
-//  colorBlue    = color.blue      // #2196F3  Blue
-//  colorTeal    = color.teal      // #00897B  Teal
-//  colorGreen   = color.green     // #4CAF50  Green
-//  colorOlive   = color.olive     // #808000  Olive
-//  colorLime    = color.lime      // #00E676  Lime
-//  colorYellow  = color.yellow    // #FFEB3B  Yellow
-//  colorOrange  = color.orange    // #FF9800  Orange
-//  colorMaroon  = color.maroon    // #880E4F  Maroon
-//  colorRed     = color.red       // #FF5252  Red
-//  colorFuchsia = color.fuchsia   // #E040FB  Fuchsia
-//  colorPurple  = color.purple    // #9C27B0  Purple
-//  colorNavy    = color.navy      // #311B92  Navy
-//  colorBlack   = color.black     // #363A45  Black
-//  colorGray    = color.gray      // #787B86  Gray
-//  colorSilver  = color.silver    // #B2B5BE  Silver
-//  colorWhite   = color.white     // #FFFFFF  White
-
 var grpColor = " ═══ Colores ═══ "
 color colorZero = color.new(#e91e63, na)  // color Fucxia
 color colorFirs = color.new(#33ffac, na)  // color Verde
@@ -38,8 +19,9 @@ color colorFour = color.new(#00ffd5, na)  // color Menta
 color colorFift = color.new(#12cef8, na)  // color Celeste
 color colorSixt = color.new(#0034c5, na)  // color Azul
 
-color colorLong  = color.new(#33ffac, na)
-color colorShort = color.new(#e91e63, na)
+var grpShadow = " ═══ Shadow ═══ "
+color colorLong  = input.color(#12cef8, title = "Long", group = grpShadow, inline = "Shad")
+color colorShort = input.color(#e91e63, title = "Short", group = grpShadow, inline = "Shad")
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -57,9 +39,10 @@ length55   = input(55,   title = "Extensión",  group = grpLong, inline = 'ema55
 length200  = input(200,  title = "Extensión",  group = grpLong, inline = 'ema200')
 
 lengthFast = input(8,    title = "Min MA",      group = grpLong)
-lengthSlow = input(20,   title = "Max MA",      group = grpLong)
+lengthMed  = input(20,   title = "Med MA",      group = grpLong)
+lengthSlow = input(55,   title = "Max MA",      group = grpLong)
 
-length          = input(10)
+length          = input(12)
 transparencia   = input(100)
 
 //  ═══════════════
@@ -97,7 +80,7 @@ ma(source, length, type) =>
 ohl = OHL.new()
 
 ma8   = ma(ohl.C, length8,    optionMa)
-ma10  = ma(ohl.C, length,     optionMa)
+ma12  = ma(ohl.C, length,     optionMa)
 ma20  = ma(ohl.C, length20,   optionMa)
 ma55  = ma(ohl.C, length55,   optionMa)
 ma200 = ma(ohl.C, length200,  optionMa)
@@ -106,74 +89,69 @@ ma200 = ma(ohl.C, length200,  optionMa)
 //  ═══  Cross  ═══
 //  ═══  Math  ═══
 
-float maHeight = ta.percentrank(ma10, 100)
+float maHeight = ta.percentrank(ma12, 100)
 float transparency = math.min(80, 100 - maHeight)
 
-// Calculando EMAs
-float maFast       = ma(ohl.C, lengthFast, OptionMa)
-float maSlow       = ma(ohl.C, lengthSlow, OptionMa)
+float maFast       = ma(ohl.C, lengthFast, optionMa)
+float maMed        = ma(ohl.C, lengthMed,  optionMa)
+float maSlow       = ma(ohl.C, lengthSlow, optionMa)
 
-bool signal         = emaFast > emaSlow
+bool signal         = maFast > maMed
 color colorCrOver   = signal ? colorLong : colorShort
 
 //  ═══  CrossOver  ═══
 bool crossOver8     = ta.crossover(maFast, maSlow)
-bool crossOver20     = ta.crossover(maFast, maSlow)
-
-bool crossUnder     = ta.crossunder(ma8, ma20)
-
-
-
-bool crossover = ta.crossover(emaFast, emaSlow)
-bool crossunder = ta.crossunder(emaFast, emaSlow)
+bool crossOver20    = ta.crossover(maFast, maSlow)
+bool crossUnder     = ta.crossunder(maFast, maSlow)
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Display EMAS  ═══
 
 //  ═══  Ma 8  ═══
-plot(eMa8, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
-plot(eMa8, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
-plot(eMa8, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
-plot(eMa8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
+plot(ma8, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
+plot(ma8, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
+plot(ma8, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
+plot(ma8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
 
 //  ═══  Ma 20  ═══
-plot(eMa20, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
-plot(eMa20, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
-plot(eMa20, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
-plot(eMa20, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
+plot(ma55, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
+plot(ma55, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
+plot(ma55, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
+plot(ma55, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
 
-plot(eMa8 ? ma8 : na,     color = colorSeco, title = "Ma 8",   linewidth = 2)
-plot(eMa20 ? ma20 : na,   color = colorThir, title = "Ma 20",  linewidth = 2)
-plot(eMa55 ? ma55 : na,   color = colorFour, title = "Ma 55",  linewidth = 2, editable = false)
-plot(eMa200 ? ma200 : na, color = colorSixt, title = "Ma 200", linewidth = 2, editable = false, style = plot.style_area)
+plot(eMa8 ? ma8 : na,     color = color.new(colorCrOver,30), linewidth = 2, editable = false)
+// plot(eMa20 ? ma20 : na,    color = color.new(colorCrOver,30), linewidth = 2, editable = false)
+// plot(eMa55 ? ma55 : na,   color = color.new(colorCrOver,30), linewidth = 2, editable = false)
+plot(eMa200 ? ma200 : na, color = color.new(colorSixt, 90),  linewidth = 2, editable = false, title = "Ma 200", style = plot.style_area)
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Shadow  ═══
-maPlot8   = plot(ma8,  "MA 8",  editable=false, color = na)
-maPlot20  = plot(ma20,  "MA 20",  editable=false, color = na)
-maPlot55  = plot(ma55,  "MA 55",  editable=false, color = na)
+maPlot8   = plot(ma8,  "MA 8", color = color.new(colorCrOver,30), editable=false)
+maPlot20  = plot(ma20,  "MA 20", color = color.new(colorCrOver,30), editable=false)
+maPlot55  = plot(ma55,  "MA 55", color = color.new(colorCrOver,30), editable=false)
 
 //  20 MA
-color maCrossOver20 = ma8 > ma20 ? colorLong : colorShort
-fill(maPlot8, maPlot20, maCrossOver20, "CrossOver 20")
+// color maCrossOver20 = ma8 > ma20 ? colorLong : colorShort
+// fill(maPlot8, maPlot20, maCrossOver20, "CrossOver 20")
 
 //  55 MA
-color maCrossOver55 = ma8 > ma55 ? colorLong : colorShort
-fill(maPlot8, maPlot55, maCrossOver55, "CrossOver 55")
+fill(maPlot8, maPlot20, color = color.new(colorCrOver,80), title = "CrossOver")
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Line Cross  ═══
 
-bool maRising  = ta.rising(ma10, 1)
-color crossMa = maRising ? color.new(colorLong, transparencia-60) : color.new(colorShort, transparencia-60)
-plot(ma20, "Operativa", crossMa, 4)
+bool maRising  = ta.rising(ma12, 1)
+color lineCross = maRising ? color.new(colorLong, transparencia-60) : color.new(colorShort, transparencia-60)
+plot(ma20, title = "Operativa", color = lineCross, linewidth = 5, editable = false)
 
-//  Marcas Operativas
-//  buyCond = ta.crossover(ma10, ma21)
-//  sellCond = ta.crossunder(ma10, ma21)
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Operativa  ═══
+buyCross = ta.crossover(ma8, ma55)
+sellCross = ta.crossunder(ma8, ma55)
 
-//  plotshape(series = buyCond, title = "Compra", style = shape.triangleup, location = location.belowbar, color = colorBuy, text = "Buy", size = size.tiny)
-//  plotshape(series = sellCond, title = "Venta", style = shape.triangledown, location = location.abovebar, color = colorSell, text = "Sell", size = size.tiny)
+plotshape(series = buyCross,  style = shape.triangleup, location = location.belowbar, color = color.new(colorLong,40), text = "Buy", size = size.tiny)
+plotshape(series = sellCross, style = shape.triangledown, location = location.abovebar, color = color.new(colorShort,40), text = "Sell", size = size.tiny)
