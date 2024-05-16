@@ -42,8 +42,8 @@ lengthFast = input(8,    title = "Min MA",      group = grpLong)
 lengthMed  = input(20,   title = "Med MA",      group = grpLong)
 lengthSlow = input(55,   title = "Max MA",      group = grpLong)
 
-length          = input(12)
-transparencia   = input(100)
+int length          = input(12)
+int transparencia   = input(100)
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -100,7 +100,7 @@ bool signal         = maFast > maMed
 color colorCrOver   = signal ? colorLong : colorShort
 
 //  ═══  CrossOver  ═══
-bool crossOver8     = ta.crossover(maFast, maSlow)
+bool crossOver      = ta.crossover(maFast, maSlow)
 bool crossOver20    = ta.crossover(maFast, maSlow)
 bool crossUnder     = ta.crossunder(maFast, maSlow)
 
@@ -149,9 +149,11 @@ plot(ma20, title = "Operativa", color = lineCross, linewidth = 5, editable = fal
 
 //  ═══════════════
 //  ═══  Cross  ═══
-//  ═══  Operativa  ═══
+//  ═══  Shape  ═══
 buyCross = ta.crossover(ma8, ma55)
 sellCross = ta.crossunder(ma8, ma55)
 
-plotshape(series = buyCross,  style = shape.triangleup, location = location.belowbar, color = color.new(colorLong,40), text = "Buy", size = size.tiny)
-plotshape(series = sellCross, style = shape.triangledown, location = location.abovebar, color = color.new(colorShort,40), text = "Sell", size = size.tiny)
+plotshape(series = crossOver,  style = shape.triangleup,   location = location.belowbar, color = color.new(colorLong,40),  size = size.tiny)
+plotshape(series = crossUnder, style = shape.triangledown, location = location.abovebar, color = color.new(colorShort,40), size = size.tiny)
+
+bgcolor(buyCross ? color.new(colorLong, 80) : sellCross ? color.new(colorShort, 80) : na)
