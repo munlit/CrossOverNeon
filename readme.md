@@ -2,13 +2,13 @@
 
 ## GUIA
 
-*Repositorio* — (http://github.com/munlit/CrossOverNeon)
+*Repositorio* — (https://github.com/munlit/CrossOverNeon.git)
 
 Este repositorio esta comprendido por nuestro indicador, en futuras versiones incluiremos opciones de configuración. 
 
 #### Archivo principal
 
-[.Pine: CrossOver Neon](https://github.com/munlit/MyKillZones/blob/master/My%20KillZones%20(%40Ultr).pine)
+[.Pine: CrossOver Neon](https://github.com/munlit/CrossOverNeon/blob/master/src/CrossOver%20Neon.pine)
 
 *  Solo es necesario copiar el codigo visualizado en RAW
 *  Pegar en el editor Pine de TradingView

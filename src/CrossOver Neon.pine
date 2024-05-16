@@ -28,8 +28,6 @@ color colorShort = input.color(#e91e63, title = "Short", group = grpShadow, inli
 //  ═══  Inputs  ═══
 
 var grpLong  = " ═══ EMAS ═══ "
-eMa8      = input.bool(defval = true, title = "", group = grpLong, inline = 'ema8')
-eMa20     = input.bool(defval = true, title = "", group = grpLong, inline = 'ema20')
 eMa55     = input.bool(defval = true, title = "", group = grpLong, inline = 'ema55')
 eMa200    = input.bool(defval = true, title = "", group = grpLong, inline = 'ema200')
 
@@ -121,9 +119,8 @@ plot(ma20, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
 plot(ma20, color = color.new(colorCrOver,98), linewidth = 45, editable = false)
 
 //  ═══  Ma 55  ═══
-plot(ma55, color = color.new(colorFift,80), linewidth = 2,  editable = false)
-plot(ma55, color = color.new(colorFift,90), linewidth = 8,  editable = false)
-plot(ma55, color = color.new(colorFift,95), linewidth = 16, editable = false)
+plot(eMa55 ? ma55 : na, color = color.new(colorCrOver,92), linewidth = 8,  editable = false)
+plot(eMa55 ? ma55 : na, color = color.new(colorCrOver,95), linewidth = 16, editable = false)
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -134,13 +131,14 @@ maPlot20  = plot(ma20, color = color.new(colorCrOver,30), linewidth = 2, editabl
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Plots  ═══
-// maPlot55  = plot(eMa55 ? ma55 : na,   color = color.new(colorFift, 70),  linewidth = 2, editable = false)
+maPlot55  = plot(eMa55 ? ma55 : na,   color = color.new(colorCrOver, 89),  linewidth = 2, editable = false)
 maPlot200 = plot(eMa200 ? ma200 : na, color = color.new(colorSixt, 87),  linewidth = 3, editable = false, title = "Ma 200", style = plot.style_area)
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Fills  ═══
 fill(maPlot8, maPlot20, color = color.new(colorCrOver,80), title = "CrossOver")
+fill(maPlot20, maPlot55, color = color.new(colorCrOver,95), title = "CrossOver")
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -154,4 +152,4 @@ plot(ma20, title = "Operativa", color = lineCross, linewidth = 5, editable = fal
 //  ═══  Cross  ═══
 //  ═══  Shape  ═══
 
-bgcolor(crossOver ? color.new(colorLong, 90) : crossUnder ? color.new(colorShort, 90) : na, show_last = 150, title = "Reseñas")
+bgcolor(crossOver ? color.new(colorLong, 88) : crossUnder ? color.new(colorShort, 88) : na, show_last = 150, title = "Reseñas")
