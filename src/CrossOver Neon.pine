@@ -115,29 +115,31 @@ plot(ma8, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
 plot(ma8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
 
 //  ═══  Ma 20  ═══
-plot(ma20, color = color.new(colorCrOver,80), linewidth = 10,  editable = false)
+plot(ma20, color = color.new(colorCrOver,80), linewidth = 10, editable = false)
 plot(ma20, color = color.new(colorCrOver,90), linewidth = 20, editable = false)
 plot(ma20, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
 plot(ma20, color = color.new(colorCrOver,98), linewidth = 45, editable = false)
 
-//  ═══  Plots  ═══
-maPlot8   = plot(eMa8 ? ma8 : na,     color = color.new(colorCrOver,30), linewidth = 2, editable = false)
-maPlot20  = plot(eMa20 ? ma20 : na,   color = color.new(colorCrOver,30), linewidth = 2, editable = false)
-maPlot55  = plot(eMa55 ? ma55 : na,   color = color.new(colorFift, 30),  linewidth = 2, editable = false)
-maPlot200 = plot(eMa200 ? ma200 : na, color = color.new(colorSixt, 87),  linewidth = 3, editable = false, title = "Ma 200", style = plot.style_area)
+//  ═══  Ma 55  ═══
+plot(ma55, color = color.new(colorFift,80), linewidth = 2,  editable = false)
+plot(ma55, color = color.new(colorFift,90), linewidth = 8,  editable = false)
+plot(ma55, color = color.new(colorFift,95), linewidth = 16, editable = false)
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Shadow  ═══
-maPlot8   = plot(ma8,  "MA 8",   color = color.new(colorCrOver,30), editable=false, display = display.none)
-maPlot20  = plot(ma20,  "MA 20", color = color.new(colorCrOver,30), editable=false, display = display.none)
-// maPlot55  = plot(ma55,  "MA 55", color = color.new(colorCrOver,30), editable=false)
+maPlot8   = plot(ma8,  color = color.new(colorCrOver,30), linewidth = 2, editable = false)
+maPlot20  = plot(ma20, color = color.new(colorCrOver,30), linewidth = 2, editable = false)
 
-//  20 MA
-// color maCrossOver20 = ma8 > ma20 ? colorLong : colorShort
-// fill(maPlot8, maPlot20, maCrossOver20, "CrossOver 20")
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Plots  ═══
+// maPlot55  = plot(eMa55 ? ma55 : na,   color = color.new(colorFift, 70),  linewidth = 2, editable = false)
+maPlot200 = plot(eMa200 ? ma200 : na, color = color.new(colorSixt, 87),  linewidth = 3, editable = false, title = "Ma 200", style = plot.style_area)
 
-//  55 MA
+//  ═══════════════
+//  ═══  Cross  ═══
+//  ═══  Fills  ═══
 fill(maPlot8, maPlot20, color = color.new(colorCrOver,80), title = "CrossOver")
 
 //  ═══════════════
@@ -145,8 +147,8 @@ fill(maPlot8, maPlot20, color = color.new(colorCrOver,80), title = "CrossOver")
 //  ═══  Line Cross  ═══
 
 bool maRising  = ta.rising(ma14, 1)
-color lineCross = maRising ? color.new(colorLong, transparencia-60) : color.new(colorShort, transparencia-60)
-plot(ma20, title = "Operativa", color = lineCross, linewidth = 3, editable = false)
+color lineCross = maRising ? color.new(colorLong, transparencia-50) : color.new(colorShort, transparencia-50)
+plot(ma20, title = "Operativa", color = lineCross, linewidth = 5, editable = false)
 
 //  ═══════════════
 //  ═══  Cross  ═══
