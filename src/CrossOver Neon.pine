@@ -283,8 +283,8 @@ color colorGrayScalePrimaryBlackberry	    = #2e234b           // GrayScalePrimar
 color colorAxiSecondary		                = #282424           // AxiSecondary
 
 var grpShadow = " ═══ Shadow ═══ "
-color colorLong  = input.color(colorEegSkyBlue30, title = "Long", group = grpShadow, inline = "Shad")
-color colorShort = input.color(colorEegFucsia40, title = "Short", group = grpShadow, inline = "Shad")
+color colorCrossLong  = input.color(colorEegSkyBlue30, title = "Long", group = grpShadow, inline = "Shad")
+color colorCrossShort = input.color(colorEegFucsia40, title = "Short", group = grpShadow, inline = "Shad")
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -358,7 +358,7 @@ float maMed        = ma(ohl.C, lengthMed,  optionMa)
 float maSlow       = ma(ohl.C, lengthSlow, optionMa)
 
 bool signal         = maFast > maMed
-color colorCrOver   = signal ? colorLong : colorShort
+color colorCrOver   = signal ? colorCrossLong : colorCrossShort
 
 //  ═══  CrossOver  ═══
 bool crossOver      = ta.crossover(maFast, maSlow)
@@ -408,11 +408,11 @@ fill(maPlot20, maPlot55, color = color.new(colorCrOver,95), title = "CrossOver")
 //  ═══  Line Cross  ═══
 
 bool maRising  = ta.rising(ma14, 1)
-color lineCross = maRising ? color.new(colorLong, transparencia-50) : color.new(colorShort, transparencia-50)
+color lineCross = maRising ? color.new(colorCrossLong, transparencia-50) : color.new(colorCrossShort, transparencia-50)
 plot(ma20, title = "Operativa", color = lineCross, linewidth = 5, editable = false)
 
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Shape  ═══
 
-bgcolor(crossOver ? color.new(colorLong, 88) : crossUnder ? color.new(colorShort, 88) : na, show_last = 150, title = "Reseñas")
+bgcolor(crossOver ? color.new(colorCrossLong, 88) : crossUnder ? color.new(colorCrossShort, 88) : na, show_last = 150, title = "Reseñas")
