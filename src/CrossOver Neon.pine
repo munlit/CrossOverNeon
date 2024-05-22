@@ -268,6 +268,7 @@ color colorBrightYellow30                   = #FDF43C           // BrightLineBac
 color colorBrightYellow40                   = #FEF301           // BrightLineBackground Yellow Nit
 color colorBrightYellow50                   = #FFDB00           // BrightLineBackground Yellow Base
 color colorTvLightYellow50                  = #eedd45           // TradingViewYellow
+color colorAmeritradeGrayNickel   			= #F1F1F1           // AmeritradeGrayNickel
 color colorAmeritradeGrayAluminum 	        = #E6E7E9           // AmeritradeGrayAluminum
 color colorAxi3d4fa1a1		                = #f0ebe3           // Axi3d4fa1a1
 color colorGrayScalewebSeasalt			    = #fafafc           // GrayScalewebSeasalt
@@ -283,8 +284,8 @@ color colorGrayScalePrimaryBlackberry	    = #2e234b           // GrayScalePrimar
 color colorAxiSecondary		                = #282424           // AxiSecondary
 
 var grpShadow = " ═══ Shadow ═══ "
-color colorCrossLong  = input.color(colorEegSkyBlue30, title = "Long", group = grpShadow, inline = "Shad")
-color colorCrossShort = input.color(colorEegFucsia40, title = "Short", group = grpShadow, inline = "Shad")
+color colorCrossLong  = input.color(colorTvLightGreen50, title = "Long", group = grpShadow, inline = "Shad")
+color colorCrossShort = input.color(colorAmeritradeGrayNickel, title = "Short", group = grpShadow, inline = "Shad")
 
 //  ═══════════════
 //  ═══  Cross  ═══
@@ -370,10 +371,10 @@ bool crossUnder     = ta.crossunder(maFast, maSlow)
 //  ═══  Display EMAS  ═══
 
 //  ═══  Ma 8  ═══
-plot(ma8, color = color.new(colorCrOver,80), linewidth = 8,  editable = false)
+plot(ma8, color = color.new(colorCrOver,85), linewidth = 8,  editable = false)
 plot(ma8, color = color.new(colorCrOver,90), linewidth = 16, editable = false)
 plot(ma8, color = color.new(colorCrOver,95), linewidth = 32, editable = false)
-plot(ma8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
+// plot(ma8, color = color.new(colorCrOver,98), linewidth = 40, editable = false)
 
 //  ═══  Ma 20  ═══
 plot(ma20, color = color.new(colorCrOver,80), linewidth = 10, editable = false)
