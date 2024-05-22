@@ -389,8 +389,8 @@ plot(eMa55 ? ma55 : na, color = color.new(colorCrOver,95), linewidth = 16, edita
 //  ═══════════════
 //  ═══  Cross  ═══
 //  ═══  Shadow  ═══
-maPlot8   = plot(ma8,  color = color.new(colorCrOver,30), linewidth = 2, editable = false)
-maPlot20  = plot(ma20, color = color.new(colorCrOver,30), linewidth = 2, editable = false)
+maPlot8   = plot(ma8,  color = color.new(colorCrOver,45), linewidth = 2, editable = false)
+maPlot20  = plot(ma20, color = color.new(colorCrOver,45), linewidth = 2, editable = false)
 
 //  ═══════════════
 //  ═══  Cross  ═══
