@@ -370,7 +370,7 @@ bool crossUnder		= ta.crossunder(maMin, maMax)
 plot(cross820 ? maMin : na,					color = color.new(colorCrOver, 85),		linewidth = 8,		editable = false)
 plot(cross820 ? maMin : na,					color = color.new(colorCrOver, 90),		linewidth = 16,		editable = false)
 plot(cross820 ? maMin : na,					color = color.new(colorCrOver, 95),		linewidth = 32,		editable = false)
-maPlotMin = plot(cross820 ? maMin : na,		color = color.new(colorCrOver, 45),		linewidth = 2,		editable = false)
+maPlotMin = plot(cross820 ? maMin : na,		color = color.new(colorCrOver, 65),		linewidth = 2,		editable = false)
 
 //  ═══  Ma 20  ═══
 plot(cross820 ? maMed : na,					color = color.new(colorCrOver, 85),		linewidth = 10,		editable = false)
