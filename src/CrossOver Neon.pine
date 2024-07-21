@@ -1,14 +1,15 @@
-// ╔═══════════════════════════════════════╗
-// ║  @Ultr                                ║
-// ║  CrossOver Neon                       ║
-// ╚═══════════════════════════════════════╝
+/// ╔═══════════════════════════════╗
+/// ║ 	CrossOver Neon				║
+/// ║ 	@	Ultr.					║
+/// ╚═══════════════════════════════╝
 
 //@version=5
 indicator("CrossOver Neon (@Ultr)", shorttitle = "CrossOver(@Ultr.)", overlay = true)
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Colors  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Colors ──────
+//// ───────────────────────
 
 // //  ══  Standard  ══
 	//  color.aqua								= #00BCD4
@@ -253,15 +254,16 @@ UltrBlue									= #003bde								// UltrBlue
 	//  UltrSkyBlue								= #12cef8								// UltrSkyBlue
 	//  UltrOrange								= #ff5a00								// UltrOrange
 
-/////////////////////////////////
+//// ─────────────────────────────────────────────────────────────────────
 
 var grpShadow = " ═══ CrossOver Neon ═══ "
 color colorNeonLong  = input.color(TVLightGreen50,			title = "Buy",			group = grpShadow,			inline = "Shad")
 color colorNeonShort = input.color(AmeTrGrayNickel,			title = "Sell",			group = grpShadow,			inline = "Shad")
 
-//  ════════════
-//  ══  Neon  ══
-//  ══  Inputs  ══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Vars ────────
+//// ───────────────────────
 
 var grpLong  = " ══ CROSS ══ "
 cross820 	= input.bool(defval = true,					title = "Cross Min",		group = grpLong,			inline = 'crossneon')
@@ -275,15 +277,17 @@ lengthTendency	= 200
 length          = 14
 transparencia   = 100
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Options  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Options ─────
+//// ───────────────────────
 
 string optionMa	= input.string("SMA", "Tipo de MM", options = ["EMA", "SMA", "RMA", "WMA", "VWMA"])
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Types  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Types ───────
+//// ───────────────────────
 
 type OHL
     float O = open
@@ -292,9 +296,10 @@ type OHL
     float C = close
     float V = volume
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Functions  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Functions ───
+//// ───────────────────────
 
 ma(source, length, type) =>
     type == "SMA" ? ta.sma(source, length) :    // Media Movil Simple
@@ -304,14 +309,16 @@ ma(source, length, type) =>
      type == "VWMA" ? ta.vwma(source, length) : // Media Movil Ponderada por volumen
      na
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Instances  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Instances ───
+//// ───────────────────────
 ohl = OHL.new()
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Math  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Math ────────
+//// ───────────────────────
 
 float maMin			= ma(ohl.C,		lengthMin,		optionMa)
 float maMed			= ma(ohl.C,		lengthMed,		optionMa)
@@ -333,9 +340,10 @@ bool crossOver		= ta.crossover(maMin, maMax)
 bool crossOverMed	= ta.crossover(maMed, maMax)
 bool crossUnder		= ta.crossunder(maMin, maMax)
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Display EMAS  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Visual EMAS ─
+//// ───────────────────────
 
 //  ═══  Ma 8  ═══
 plot(cross820 ? maMin : na,					color = color.new(colorCrOver, 85),		linewidth = 8,		editable = false)
@@ -360,20 +368,23 @@ maPlotMax  = plot(cross55200 ? maMax : na,	color = color.new(colorCrOver, 89),		
 //  ═══  Ma 200  ═══
 maPlot200 = plot(cross55200 ? ma200 : na,	color = color.new(UltrBlue, 82),	linewidth = 3,	title = "Ma 200",	style = plot.style_area)
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Fills  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Fills ───────
+//// ───────────────────────
 fill(maPlotMin,		maPlotMed,		color = color.new(colorCrOver,80),		title = "CrossOver")
 fill(maPlotMed,		maPlotMax,		color = color.new(colorCrOver,95),		title = "CrossOver")
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Line Cross  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Line Cross ──
+//// ───────────────────────
 
 
 
-//  ══════════════
-//  ═══  Neon  ═══
-//  ═══  Shape  ═══
+//// ───────────────────────
+/// ─── Neon ────────
+/// ─── Shape ───────
+//// ───────────────────────
 
 bgcolor(crossOver ? color.new(colorNeonLong, 88) : crossUnder ? color.new(colorNeonShort, 88) : na, show_last = 150, title = "Reseñas")
